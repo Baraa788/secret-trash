@@ -1,39 +1,32 @@
 print("welcome to my computer quiz!")
 
-playing = input("Do you want to play ?")
-
+playing = input("Do you want to play..? ")
 if playing.lower() != "yes":
     quit()
+
 print("okay.. let's play:")
 score = 0
 
-answer = input("what does CPU stand for ?")
-if answer.lower() == "central processing unit":
-    print("Correct  (:")
-    score += 1
-else:
-    print("Incorrect ):")
+
+quiz_data = {
+    "what does CPU stand for? ": "central processing unit",
+    "what does GPU stand for? ": "graphics processing unit",
+    "what does RAM stand for? ": "random access memory",
+    "what does PSU stand for? ": "power supply"
+}
 
 
-answer = input("what does GPU stand for ?")
-if answer.lower() == "graphics processing unit":
-    print("Correct  (:")
-    score += 1
-else:
-    print("Incorrect ):")
+for question, correct_answer in quiz_data.items():
+    answer = input(question)
+    
+    if answer.lower() == correct_answer:
+        print("Correct :)")
+        score += 1
+    else:
+        print("Incorrect :(")
 
-answer = input("what does RAM stand for ?")
-if answer.lower() == "random access memory":
-    print("Correct  (:")
-    score += 1
-else:
-    print("Incorrect ):")
 
-answer = input("what does PSU stand for ?")
-if answer.lower() == "power supply ":
-    print("Correct  (:")
-    score += 1
-else:
-    print("Incorrect ):")
+total_questions = len(quiz_data)
 
-print(f"you got {(score/4)*100} %")
+#you got 3 out of 4 questions correct!
+print(f"you got {score} out of {total_questions} questions correct..!")
