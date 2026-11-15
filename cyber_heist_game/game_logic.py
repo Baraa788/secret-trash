@@ -49,25 +49,49 @@ def update_player_stats(player_id, earned_reward, used_attempts):
 
 
 def generate_hint(secret_code, guess):
-    """مقارنة تخمين اللاعب بالكود السري وتوليد تلميحات"""
-    correct_positions = []
 
+    exact_matches = []
+    misplaced_digits = []
+
+    # 1. فحص الأرقام الصحيحة في مكانها الصحيح، والأرقام الموجودة في مكان خاطئ
     for i in range(4):
         if guess[i] == secret_code[i]:
-            correct_positions.append(
-                f"Digit #{i+1} ({guess[i]}) is CORRECT and in the right spot!"
+            exact_matches.append(
+                f"Digit #{i+1} [{guess[i]}] -> EXACT MATCH (Locked in!)."
+            )
+        elif guess[i] in secret_code:
+            misplaced_digits.append(
+                f"Digit [{guess[i]}] -> PRESENT in PIN, but wrong position!"
             )
 
-    total_sum = sum(int(digit) for digit in secret_code)
+    # 2. تحليل البصمة الرقمية للكود السري (Metadata)
+    digits_list = [int(d) for d in secret_code]
+    total_sum = sum(digits_list)
+    even_count = sum(1 for d in digits_list if d % 2 == 0)
+    odd_count = 4 - even_count
+    min_digit = min(digits_list)
+    max_digit = max(digits_list)
 
-    print("\n💡 [SMART HINT SYSTEM]:")
-    if correct_positions:
-        for msg in correct_positions:
+    print("\n" + "-" * 50)
+    print("🕵️‍♂️ [DECRYPTION ANALYZER - SYSTEM LEAK]:")
+
+    # عرض تطابق الأرقام
+    if exact_matches:
+        for msg in exact_matches:
             print(f"   ✅ {msg}")
-    else:
-        print("   ❌ None of the digits are in the correct position.")
+    if misplaced_digits:
+        # استخدام set لمنع تكرار الرسالة لنفس الرقم
+        for msg in set(misplaced_digits):
+            print(f"   ⚠️ {msg}")
+    if not exact_matches and not misplaced_digits:
+        print("   ❌ Zero digits matched the firewall signature.")
 
-    print(f"   🔢 Extra Clue: The sum of all 4 digits equals ({total_sum}).")
+    # عرض التلميحات الاستخباراتية الإضافية
+    print("\n📡 [METADATA INTEL]:")
+    print(f"   • Sum of all 4 digits   : {total_sum}")
+    print(f"   • Even vs Odd digits    : {even_count} Even / {odd_count} Odd")
+    print(f"   • Digit Range (Min-Max) : Between {min_digit} and {max_digit}")
+    print("-" * 50)
 
 
 def play_heist(player):
@@ -78,7 +102,7 @@ def play_heist(player):
         return player
 
     secret_code = bank["secret_code"]
-    chances = 3
+    chances = 4
     attempts_used = 0
 
     print("\n" + "=" * 50)
