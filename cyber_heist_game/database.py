@@ -53,10 +53,10 @@ def init_db():
             VALUES (%s, %s, %s)
             """
             sample_banks = [
-                ("البنك السويسري الرقمي", "4829", 500),
-                ("خزنة البنك المركزي", "1094", 1000),
-                ("بنك المستقبل الافتراضي", "7351", 300),
-                ("محفظة التشفير الكبرى", "9026", 1500),
+                ("swiss digital bank", "4829", 500),
+                ("cental bank vault", "1094", 1000),
+                ("virtual future bank", "7351", 300),
+                ("grand crypto wallet", "9026", 1500),
             ]
             cursor.executemany(insert_banks_query, sample_banks)
 
