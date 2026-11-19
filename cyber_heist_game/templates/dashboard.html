@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyber Heist | Mission Control</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <!-- الشريط العلوي لبيانات اللاعب (بدون id) -->
+        <nav class="top-bar">
+            <div class="brand">CYBER<span>HEIST</span></div>
+            <div class="agent-stats">
+                <div class="stat-pill">🕵️‍♂️ <span>{{ player.username }}</span></div>
+                <div class="stat-pill score-pill">💰 <span>{{ player.score }} PTS</span></div>
+                <div class="stat-pill">🎯 <span>{{ player.attempts }} ATTEMPTS</span></div>
+                <a href="{{ url_for('logout') }}" class="btn-logout">Logout</a>
+            </div>
+        </nav>
+
+        <!-- رسائل التنبيه -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <!-- بطاقة الهدف المستهدف -->
+        <main class="mission-board">
+            <div class="cyber-card target-card">
+                <div class="target-header">
+                    <div>
+                        <span class="label-tag">ACTIVE TARGET SYSTEM</span>
+                        <h2 class="bank-title">🏦 {{ bank.name }}</h2>
+                    </div>
+                    <div class="bounty-box">
+                        <span>BOUNTY REWARD</span>
+                        <strong>+{{ bank.reward }} PTS</strong>
+                    </div>
+                </div>
+
+                <div class="protocol-info">
+                    <span>🔐 Security: 4-Digit Numeric PIN (0-9)</span>
+                    <span class="chances-badge {% if chances <= 1 %}danger{% endif %}">
+                        ⏳ Chances Left: <strong>{{ chances }} / 4</strong>
+                    </span>
+                </div>
+
+                <!-- حالة انتهاء الجولة (فوز أو خسارة) -->
+                {% if game_over and status %}
+                    <div class="result-banner result-{{ status.type }}">
+                        <h3>{{ status.text }}</h3>
+                        <form action="{{ url_for('dashboard') }}" method="POST">
+                            <button type="submit" name="new_mission" value="1" class="btn btn-accent">
+                                🚀 Hack Next Target Bank
+                            </button>
+                        </form>
+                    </div>
+                {% else %}
+                    <!-- نموذج إدخال التخمين -->
+                    <form action="{{ url_for('dashboard') }}" method="POST" class="pin-form">
+                        <label for="guess">ENTER 4-DIGIT DECRYPTION PIN</label>
+                        <div class="pin-input-wrapper">
+                            <input type="text" id="guess" name="guess" maxlength="4" pattern="\d{4}" placeholder="0000" required autofocus autocomplete="off">
+                            <button type="submit" class="btn btn-primary">EXECUTE BREACH</button>
+                        </div>
+                    </form>
+                {% endif %}
+            </div>
+
+            <!-- صندوق التلميحات الاستخباراتية المتقدمة -->
+            {% if hint %}
+            <div class="cyber-card intel-card">
+                <h3>📡 DECRYPTION ANALYZER — SYSTEM LEAK</h3>
+                
+                <div class="intel-grid">
+                    <div class="intel-box">
+                        <h4>🔍 Digit Position Analysis</h4>
+                        {% for msg in hint.exact %}
+                                <li class="match-exact">✅ {{ msg }}</li>
+                            {% endfor %}
+                            {% for msg in hint.misplaced %}
+                                <li class="match-near">⚠️ {{ msg }}</li>
+                            {% endfor %}
+                            {% if not hint.exact and not hint.misplaced %}
+                                <li class="match-none">❌ Zero digits matched the firewall signature.</li>
+                            {% endif %}
+                        </ul>
+                    </div>
+
+                    <div class="intel-box">
+                        <h4>🧬 Metadata Intelligence</h4>
+                        <div class="meta-items">
+                            <div class="meta-item">
+                                <span>Sum of 4 Digits</span>
+                                <strong>{{ hint.sum }}</strong>
+                            </div>
+                            <div class="meta-item">
+                                <span>Even / Odd Ratio</span>
+                                <strong>{{ hint.even }} Even / {{ hint.odd }} Odd</strong>
+                            </div>
+                            <div class="meta-item">
+                                <span>Digit Range</span>
+                                <strong>{{ hint.min }} — {{ hint.max }}</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </main>
+    </div>
+</body>
+</html>

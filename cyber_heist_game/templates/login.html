@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyber Heist | System Access</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container auth-container">
+        <header class="cyber-header">
+            <div class="badge">SECURE TERMINAL v2.0</div>
+            <h1>CYBER <span>HEIST</span></h1>
+            <p class="subtitle">The Digital Vault Breaker</p>
+        </header>
+
+        <!-- عرض رسائل التنبيه القادمة من Flask -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <div class="auth-grid">
+            <!-- بطاقة تسجيل الدخول للعائدين -->
+            <div class="cyber-card">
+                <h2>🔑 Returning Agent</h2>
+                <p class="card-desc">Authenticate to resume your missions.</p>
+                <form action="{{ url_for('auth') }}" method="POST">
+                    <input type="hidden" name="action" value="login">
+                    <div class="input-group">
+                        <label>Agent Codename</label>
+                        <input type="text" name="username" placeholder="Enter username..." required autocomplete="off">
+                    </div>
+                    <div class="input-group">
+                        <label>Access Passkey</label>
+                        <input type="password" name="password" placeholder="••••••••" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Initialize Login</button>
+                </form>
+            </div>
+
+            <!-- بطاقة إنشاء حساب جديد + دخول تلقائي -->
+            <div class="cyber-card highlight-card">
+                <h2>🆕 New Recruit</h2>
+                <p class="card-desc">Create an encrypted profile & deploy immediately.</p>
+                <form action="{{ url_for('auth') }}" method="POST">
+                    <input type="hidden" name="action" value="register">
+                    <div class="input-group">
+                        <label>Choose Codename</label>
+                        <input type="text" name="username" placeholder="e.g., ShadowByte" required autocomplete="off">
+                    </div>
+                    <div class="input-group">
+                        <label>Create Passkey</label>
+                        <input type="password" name="password" placeholder="Strong password..." required>
+                    </div>
+                    <button type="submit" class="btn btn-accent">Register & Breach</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,409 @@
+@import url('https://googleapis.com');
+
+:root {
+    --bg-dark: #070a13;
+    --bg-surface: #0f1629;
+    --bg-card: rgba(17, 25, 48, 0.85);
+    --primary-blue: #38bdf8;
+    --accent-purple: #8b5cf6;
+    --purple-glow: rgba(139, 92, 246, 0.35);
+    --blue-glow: rgba(56, 189, 248, 0.25);
+    --text-main: #f1f5f9;
+    --text-muted: #94a3b8;
+    --border-color: rgba(139, 92, 246, 0.25);
+    --success: #10b981;
+    --danger: #ef4444;
+    --warning: #f59e0b;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background-color: var(--bg-dark);
+    background-image: 
+        radial-gradient(circle at 15% 20%, rgba(139, 92, 246, 0.15) 0%, transparent 40%),
+        radial-gradient(circle at 85% 80%, rgba(56, 189, 248, 0.12) 0%, transparent 40%);
+    color: var(--text-main);
+    min-height: 100vh;
+    padding: 2rem 1rem;
+}
+
+.container {
+    max-width: 960px;
+    margin: 0 auto;
+}
+
+/* Header & Branding */
+.cyber-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+}
+
+.badge {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--primary-blue);
+    background: rgba(56, 189, 248, 0.1);
+    border: 1px solid var(--blue-glow);
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    margin-bottom: 0.8rem;
+    letter-spacing: 1px;
+}
+
+.cyber-header h1 {
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.cyber-header h1 span, .brand span {
+    background: linear-gradient(135deg, var(--primary-blue), var(--accent-purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+    color: var(--text-muted);
+    margin-top: 0.4rem;
+}
+
+/* Cards */
+.cyber-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 2rem;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    margin-bottom: 1.5rem;
+}
+
+.highlight-card {
+    border-color: rgba(139, 92, 246, 0.55);
+    box-shadow: 0 0 25px rgba(139, 92, 246, 0.15);
+}
+
+.auth-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.cyber-card h2 {
+    font-size: 1.35rem;
+    margin-bottom: 0.4rem;
+}
+
+.card-desc {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Forms & Inputs */
+.input-group {
+    margin-bottom: 1.2rem;
+}
+
+.input-group label {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 0.4rem;
+}
+
+input[type="text"], input[type="password"] {
+    width: 100%;
+    padding: 0.85rem 1rem;
+    background: var(--bg-surface);
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    border-radius: 10px;
+    color: var(--text-main);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.95rem;
+    transition: all 0.25s ease;
+}
+
+input:focus {
+    outline: none;
+    border-color: var(--accent-purple);
+    box-shadow: 0 0 12px var(--purple-glow);
+}
+
+/* Buttons */
+.btn {
+    width: 100%;
+    padding: 0.9rem 1.5rem;
+    border: none;
+    border-radius: 10px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #2563eb, var(--primary-blue));
+    color: #fff;
+    box-shadow: 0 4px 15px var(--blue-glow);
+}
+
+.btn-accent {
+    background: linear-gradient(135deg, #6d28d9, var(--accent-purple));
+    color: #fff;
+    box-shadow: 0 4px 15px var(--purple-glow);
+}
+
+/* Top Navigation Bar */
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    padding: 1rem 1.5rem;
+    border-radius: 14px;
+    margin-bottom: 1.5rem;
+}
+
+.brand {
+    font-size: 1.4rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+.agent-stats {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+}
+
+.stat-pill {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    background: var(--bg-surface);
+    padding: 0.45rem 0.9rem;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.score-pill {
+    border-color: rgba(139, 92, 246, 0.4);
+    color: #c4b5fd;
+}
+
+.btn-logout {
+    color: var(--danger);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 0.45rem 0.9rem;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    border-radius: 8px;
+    transition: background 0.2s;
+}
+
+.btn-logout:hover {
+    background: rgba(239, 68, 68, 0.15);
+}
+
+/* Target & PIN Input */
+.target-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding-bottom: 1.2rem;
+    margin-bottom: 1.2rem;
+}
+
+.label-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--primary-blue);
+    letter-spacing: 1px;
+}
+
+.bank-title {
+    font-size: 1.6rem;
+    margin-top: 0.3rem;
+}
+
+.bounty-box {
+    background: rgba(139, 92, 246, 0.15);
+    border: 1px solid var(--accent-purple);
+    padding: 0.6rem 1.2rem;
+    border-radius: 10px;
+    text-align: right;
+}
+
+.bounty-box span {
+    display: block;
+    font-size: 0.7rem;
+    color: var(--text-muted);
+}
+
+.bounty-box strong {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.15rem;
+    color: #ddd6fe;
+}
+
+.protocol-info {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-bottom: 1.8rem;
+}
+
+.chances-badge strong {
+    color: var(--primary-blue);
+}
+
+.chances-badge.danger strong {
+    color: var(--danger);
+}
+
+.pin-form label {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--primary-blue);
+    margin-bottom: 0.6rem;
+    text-align: center;
+}
+
+.pin-input-wrapper {
+    display: flex;
+    gap: 1rem;
+    max-width: 480px;
+    margin: 0 auto;
+}
+
+.pin-input-wrapper input {
+    text-align: center;
+    font-size: 1.6rem;
+    letter-spacing: 8px;
+    font-weight: 700;
+}
+
+/* Intel & Hints Section */
+.intel-card h3 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1rem;
+    color: var(--primary-blue);
+    margin-bottom: 1.2rem;
+}
+
+.intel-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.2rem;
+}
+
+.intel-box {
+    background: var(--bg-surface);
+    padding: 1.2rem;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.intel-box h4 {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-bottom: 0.8rem;
+}
+
+.intel-box ul {
+    list-style: none;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+}
+
+.intel-box li {
+    margin-bottom: 0.5rem;
+    line-height: 1.4;
+}
+
+.match-exact { color: var(--success); }
+.match-near { color: var(--warning); }
+.match-none { color: var(--text-muted); }
+
+.meta-items {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.meta-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.08);
+}
+
+.meta-item strong {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--accent-purple);
+}
+
+/* Alerts & Result Banners */
+.alert {
+    padding: 0.9rem 1.2rem;
+    border-radius: 10px;
+    margin-bottom: 1.2rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+.alert-success {
+    background: rgba(16, 185, 129, 0.15);
+    border: 1px solid var(--success);
+    color: #6ee7b7;
+}
+
+.alert-error {
+    background: rgba(239, 68, 68, 0.15);
+    border: 1px solid var(--danger);
+    color: #fca5a5;
+}
+
+.result-banner {
+    text-align: center;
+    padding: 1.5rem;
+    border-radius: 12px;
+}
+
+.result-banner h3 {
+    margin-bottom: 1.2rem;
+}
+.result-win {
+    background: rgba(16, 185, 129, 0.12);
+    border: 1px solid var(--success);
+}
+
+.result-lose {
+    background: rgba(239, 68, 68, 0.12);
+    border: 1px solid var(--danger);
+}
