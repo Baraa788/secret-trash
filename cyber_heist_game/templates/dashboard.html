@@ -32,60 +32,74 @@
 
         <!-- بطاقة الهدف المستهدف -->
         <main class="mission-board">
-            <div class="cyber-card target-card">
-                <div class="target-header">
-                    <div>
-                        <span class="label-tag">ACTIVE TARGET SYSTEM</span>
-                        <h2 class="bank-title">🏦 {{ bank.name }}</h2>
-                    </div>
-                    <div class="bounty-box">
-                        <span>BOUNTY REWARD</span>
-                        <strong>+{{ bank.reward }} PTS</strong>
-                    </div>
-                </div>
-
-                <div class="protocol-info">
-                    <span>🔐 Security: 4-Digit Numeric PIN (0-9)</span>
-                    <span class="chances-badge {% if chances <= 1 %}danger{% endif %}">
-                        ⏳ Chances Left: <strong>{{ chances }} / 4</strong>
-                    </span>
-                </div>
-
-                <!-- حالة انتهاء الجولة (فوز أو خسارة) -->
-                {% if game_over and status %}
-                    <div class="result-banner result-{{ status.type }}">
-                        <h3>{{ status.text }}</h3>
-                        <form action="{{ url_for('dashboard') }}" method="POST">
-                            <button type="submit" name="new_mission" value="1" class="btn btn-accent">
-                                🚀 Hack Next Target Bank
-                            </button>
-                        </form>
-                    </div>
-                {% else %}
-                    <!-- نموذج إدخال التخمين -->
-                    <form action="{{ url_for('dashboard') }}" method="POST" class="pin-form">
-                        <label for="guess">ENTER 4-DIGIT DECRYPTION PIN</label>
-                        <div class="pin-input-wrapper">
-                            <input type="text" id="guess" name="guess" maxlength="4" pattern="\d{4}" placeholder="0000" required autofocus autocomplete="off">
-                            <button type="submit" class="btn btn-primary">EXECUTE BREACH</button>
-                        </div>
+            {% if stage_completed %}
+                <div class="cyber-card target-card result-banner result-win" style="padding: 3rem 2rem;">
+                    <div class="badge" style="margin-bottom: 1rem;">STAGE 1 COMPLETE (4/4 BANKS BREACHED)</div>
+                    <h2 style="font-size: 2rem; margin-bottom: 1rem;">🏆 STAGE 1 COMPLETED SUCCESSFULLY!</h2>
+                    <p style="color: var(--text-muted); margin-bottom: 2rem; font-size: 1.05rem;">
+                        Outstanding work, Agent <strong>{{ player.username }}</strong>! You have successfully infiltrated all 4 target vaults in Stage 1.
+                    </p>
+                    <form action="{{ url_for('dashboard') }}" method="POST" style="max-width: 320px; margin: 0 auto;">
+                        <button type="submit" name="restart_stage" value="1" class="btn btn-accent">
+                            🔄 Replay Stage 1
+                        </button>
                     </form>
-                {% endif %}
-            </div>
+                </div>
+            {% else %}
+                <div class="cyber-card target-card">
+                    <div class="target-header">
+                        <div>
+                            <span class="label-tag">STAGE 1 PROGRESS: {{ hacked_count }} / 4 BANKS CLEARED</span>
+                            <h2 class="bank-title">🏦 {{ bank.name }}</h2>
+                        </div>
+                        <div class="bounty-box">
+                            <span>BOUNTY REWARD</span>
+                            <strong>+{{ bank.reward }} PTS</strong>
+                        </div>
+                    </div>
 
-            <!-- صندوق التلميحات الاستخباراتية المتقدمة -->
-            {% if hint %}
+                    <div class="protocol-info">
+                        <span>🔐 Security: 4-Digit Numeric PIN (0-9)</span>
+                        <span class="chances-badge {% if chances <= 1 %}danger{% endif %}">
+                            ⏳ Chances Left: <strong>{{ chances }} / 4</strong>
+                        </span>
+                    </div>
+
+                    {% if game_over and status %}
+                        <div class="result-banner result-{{ status.type }}">
+                            <h3>{{ status.text }}</h3>
+                            <form action="{{ url_for('dashboard') }}" method="POST">
+                                <button type="submit" name="new_mission" value="1" class="btn btn-accent">
+                                    🚀 Hack Next Target Bank
+                                </button>
+                            </form>
+                        </div>
+                    {% else %}
+                        <form action="{{ url_for('dashboard') }}" method="POST" class="pin-form">
+                            <label for="guess">ENTER 4-DIGIT DECRYPTION PIN</label>
+                            <div class="pin-input-wrapper">
+                                <input type="text" id="guess" name="guess" maxlength="4" pattern="\d{4}" 
+                                        placeholder="0000" required autofocus autocomplete="off">
+                                <button type="submit" class="btn btn-primary">EXECUTE BREACH</button>
+                            </div>
+                        </form>
+                    {% endif %}
+                </div>
+            {% endif %}
+
+            {% if hint and not stage_completed %}
             <div class="cyber-card intel-card">
                 <h3>📡 DECRYPTION ANALYZER — SYSTEM LEAK</h3>
                 
                 <div class="intel-grid">
                     <div class="intel-box">
                         <h4>🔍 Digit Position Analysis</h4>
-                        {% for msg in hint.exact %}
+                        <ul>
+                            {% for msg in hint.exact %}
                                 <li class="match-exact">✅ {{ msg }}</li>
                             {% endfor %}
                             {% for msg in hint.misplaced %}
-                                <li class="match-near">⚠️ {{ msg }}</li>
+                            <li class="match-near">⚠️ {{ msg }}</li>
                             {% endfor %}
                             {% if not hint.exact and not hint.misplaced %}
                                 <li class="match-none">❌ Zero digits matched the firewall signature.</li>
@@ -114,6 +128,3 @@
             </div>
             {% endif %}
         </main>
-    </div>
-</body>
-</html>

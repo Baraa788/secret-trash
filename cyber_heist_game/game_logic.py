@@ -2,14 +2,21 @@ from mysql.connector import Error
 from database import get_db_connection
 
 
-def get_random_bank():
-    """سحب بنك وهمي  عشوائياً db"""
+def get_random_bank(excluded_ids=None):
+    """سحب بنك وهمي عشوائياً مع استثناء البنوك التي تم اختراقها في هذه المرحلة"""
     connection = None
     cursor = None
     try:
         connection = get_db_connection()
         cursor = connection.cursor(dictionary=True)
-        cursor.execute("SELECT * FROM banks ORDER BY RAND() LIMIT 1")
+        
+        if excluded_ids and len(excluded_ids) > 0:
+            placeholders = ', '.join(['%s'] * len(excluded_ids))
+            query = f"SELECT * FROM banks WHERE id NOT IN ({placeholders}) ORDER BY RAND() LIMIT 1"
+            cursor.execute(query, tuple(excluded_ids))
+        else:
+            cursor.execute("SELECT * FROM banks ORDER BY RAND() LIMIT 1")
+            
         return cursor.fetchone()
     except Error as err:
         print(f"Database Error (Fetching Bank): {err}")
